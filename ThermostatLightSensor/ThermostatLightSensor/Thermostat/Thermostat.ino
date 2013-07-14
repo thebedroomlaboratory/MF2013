@@ -1,5 +1,5 @@
-#include <Adafruit_GFX.h>
-#include <Adafruit_PCD8544.h>
+#include "Adafruit_GFX.h"
+#include "Adafruit_PCD8544.h"
 
 // pin 7 - Serial clock out (SCLK)
 // pin 6 - Serial data out (DIN)
