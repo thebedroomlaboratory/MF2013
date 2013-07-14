@@ -45,6 +45,10 @@ int sensorPin1 = 0;
   int buttonState = 0;
   int lastButtonState = 0;     // previous state of the button
   int temperatureCOUT = 0;
+  
+boolean input = false;         // a string to hold incoming data
+boolean transmissionComplete = false;  // whether the string is complete
+
 /*
  * setup() - this function runs once when you turn your Arduino on
  * We initialize the serial connection with the computer
@@ -80,8 +84,17 @@ void setup()
 void loop()                     // run over and over again
 {
  //getting the voltage reading from the temperature sensor
- int reading = analogRead(sensorPin);  
- ledPin = Serial.read(); // this takes in the variable from the control scripts and overrides the led state.
+ int reading = analogRead(sensorPin); 
+  // print the string when a newline arrives:
+  if (transmissionComplete) {
+    if(input)
+      ledPin=HIGH;
+    else
+       ledPin=LOW; 
+    // clear the string:
+    transmissionComplete = false;
+  } 
+ //ledPin = Serial.read(); // this takes in the variable from the control scripts and overrides the led state.
 // int reading1 = analogRead (sensorPin1);
  // converting that reading to voltage, for 3.3v arduino use 3.3
  float voltage = reading * 3.3;
@@ -128,7 +141,7 @@ int reading2 = analogRead(sensorPin1);
   buttonState = digitalRead(buttonPin);
 
  
- digitalWrite(9,ledPin); // for the serial in
+ digitalWrite(8,ledPin); // for the serial in
  Serial.print(buttonState);
  Serial.print("?");
  Serial.print(reading2);
@@ -139,3 +152,26 @@ int reading2 = analogRead(sensorPin1);
 // Serial.print("?");
 // Serial.println(buttonState);
 }
+
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read(); 
+    // add it to the inputString:
+    
+    // if the incoming character is a newline, set a flag
+    // so the main loop can do something about it:
+    if (inChar != '\n') {
+      if (inChar == '0')
+        input=false;
+      else if (inChar == '1')
+        input=true;
+    }
+    else {
+      transmissionComplete = true;
+    }
+  }
+}
+
+
+
