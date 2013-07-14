@@ -15,8 +15,19 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     self.write_message("The server says: 'Hello'. Connection was accepted.")
 
   def on_message(self, message):
-    self.write_message("The server says: " + message + " back at you")
+    self.write_message("Updating...")
     print 'received:', message
+    heating = message[0]
+    lighting=message[1]
+    oven=message[2]
+    print "heating: "+heating+", lighting: "+lighting+" , oven: "+oven
+    #updateHeatingStatus(heating)
+    #updateLightingStatus(lighting)
+    #updateOvenStatus(oven)
+    self.write_message("Updated")
+
+
+    
 
   def on_close(self):
     print 'connection closed...'
