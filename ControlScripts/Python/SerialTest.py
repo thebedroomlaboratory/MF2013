@@ -4,8 +4,15 @@
 from time import sleep
 from sys import exit
 import serial
+import dao
 
 print("Setting up variables and USB serial connections")
+
+
+# Global Constants of Arduino numbers
+PEOPLE = 0
+THERMOSTAT = 1
+OVEN = 2
 
 # Global Variables for people counter stuff
 # This arduino number is 0
@@ -37,6 +44,9 @@ ovenTempString = ""
 ovenArray = [ 0, 1 ]
 ovenReadingComplete = False
 
+# Global array of tables
+TABLES = ['people', 'temp', 'oven']
+
 
 print("Ready to read!")
 
@@ -62,8 +72,8 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
         else:
             if (thisStartup == False):
                 thisTempString += str(val)
-                thisReadingComplete = False
-        if(thisArduino==0):
+			thisReadingComplete = False
+        if(thisArduino==PEOPLE):
             global pplStartup
             global pplPosOfVal
             global pplTempString
@@ -74,7 +84,7 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
             pplTempString = thisTempString
             pplArray = thisArray
             pplReadingComplete = thisReadingComplete
-        elif(thisArduino==1):
+        elif(thisArduino==THERMOSTAT):
             global thermStartup
             global thermPosOfVal
             global thermTempString
@@ -85,7 +95,7 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
             thermTempString = thisTempString
             thermArray = thisArray
             thermReadingComplete = thisReadingComplete
-        elif(thisArduino==2):
+        elif(thisArduino==OVEN):
             global ovenStartup
             global ovenPosOfVal
             global ovenTempString
@@ -108,14 +118,23 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
             global ovenReadingComplete
             ovenReadingComplete = thisReadingComplete
             
+# Connect to the database
+dao.connect()
+
+
 def serialWrite():
     print("Ready to read!")
 
 while True:
     try:
-        readSerial(0, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
+        readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
         if(pplReadingComplete):
-            print(pplArray)
+            # Presist the read data to the database
+        	dao.insertRow(TABLES[PEOPLE], pplArray)
+			print(pplArray)
     except KeyboardInterrupt: 
         exit()
+    finally:
+        # close the database connection
+        dao.disConnect()
     
