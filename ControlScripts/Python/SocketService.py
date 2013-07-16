@@ -2,6 +2,16 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+#import tornado.template
+
+#Method to ensure only 1 or 0 can be passed otherwise -1 is passed to indicate an error
+def validate(val):
+  if int(val) == 1:
+		return val
+	elif int(val) ==0:
+		return val
+	else:
+		return "-1"  
 
 class WSHandler(tornado.websocket.WebSocketHandler):
   def open(self):
@@ -11,9 +21,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
   def on_message(self, message):
     self.write_message("Updating...")
     print 'received:', message
-    heating = message[0]
-    lighting=message[1]
-    oven=message[2]
+    heating = validate(message[0])
+    lighting = validate(message[1])
+    oven = validate(message[2])
     print "heating: "+heating+", lighting: "+lighting+" , oven: "+oven
     #updateHeatingStatus(heating)
     #updateLightingStatus(lighting)
