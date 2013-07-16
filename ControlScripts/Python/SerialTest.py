@@ -4,8 +4,15 @@
 from time import sleep
 from sys import exit
 import serial
+import dao
 
 print("Setting up variables and USB serial connections")
+
+
+# Global Constants of Arduino numbers
+PEOPLE = 0
+THERMOSTAT = 1
+OVEN = 2
 
 # Global Variables for people counter stuff
 # This arduino number is 0
@@ -34,6 +41,9 @@ ovenPosOfVal = 0
 ovenTempString = ""
 ovenArray = [ 0, 1 ]
 
+# Global array of tables
+TABLES = ['people', 'temp', 'oven']
+
 
 print("Ready to read!")
 
@@ -60,7 +70,7 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
         else:
             if (thisStartup == False):
                 thisTempString += str(val)
-        if(thisArduino==0):
+        if(thisArduino==PEOPLE):
             global pplStartup
             pplStartup = thisStartup
             global pplPosOfVal
@@ -69,7 +79,7 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
             pplTempString = thisTempString
             global pplArray
             pplArray = thisArray
-        elif(thisArduino==1):
+        elif(thisArduino==THERMOSTAT):
             global thermStartup
             thermStartup = thisStartup
             global thermPosOfVal
@@ -78,7 +88,7 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
             thermTempString = thisTempString
             global thermArray
             thermArray = thisArray
-        elif(thisArduino==2):
+        elif(thisArduino==OVEN):
             global ovenStartup
             ovenStartup = thisStartup
             global ovenPosOfVal
@@ -88,13 +98,18 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
             global ovenArray
             ovenArray = thisArray
             
-
-
+# Connect to the database
+dao.connect()
 while True:
     try:
-        readSerial(0, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray)
+        readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray)
+        # Presist the read data to the database
+        dao.insertRow(TABLES[PEOPLE], pplArray)
         print(pplArray)
         
     except KeyboardInterrupt: 
         exit()
+    finally:
+        # close the database connection
+        dao.disConnect()
     
