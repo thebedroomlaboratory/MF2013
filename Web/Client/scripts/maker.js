@@ -1,3 +1,11 @@
+//attaches sendCommands function to trigger when any button of class "socketSwitch" changes status
+$(function(ready){
+    $('.socketSwitch').change(function() {
+        sendCommands();
+    });
+});
+
+
 
 // This just displays the first parameter passed to it
 // in an alert.
