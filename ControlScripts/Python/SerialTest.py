@@ -16,7 +16,8 @@ OVEN = 2
 
 # Global Variables for people counter stuff
 # This arduino number is 0
-pplSerial = serial.Serial("COM5",9600)
+#pplSerial = serial.Serial("COM5",9600)
+pplSerial = serial.Serial("/dev/ttyUSB0",9600)
 pplSerial.flush()
 pplStartup = True
 pplPosOfVal = 0
@@ -51,6 +52,9 @@ TABLES = ['people', 'temp', 'oven']
 print("Ready to read!")
 
 def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempString, thisArray, thisReadingComplete):    
+    global pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete, thermStartup, thermPosOfVal, thermTempString, thermArray, thermReadingComplete, ovenStartup, ovenPosOfVal, ovenTempString, ovenArray, ovenReadingComplete
+
+                        
     if (thisSerial.inWaiting() > 0):
         val = thisSerial.read()
         if (val == '\n'):
@@ -72,35 +76,20 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
         else:
             if (thisStartup == False):
                 thisTempString += str(val)
-			thisReadingComplete = False
+                thisReadingComplete = False
         if(thisArduino==PEOPLE):
-            global pplStartup
-            global pplPosOfVal
-            global pplTempString
-            global pplArray
-            global pplReadingComplete
             pplStartup = thisStartup
             pplPosOfVal = thisPosOfValue
             pplTempString = thisTempString
             pplArray = thisArray
             pplReadingComplete = thisReadingComplete
         elif(thisArduino==THERMOSTAT):
-            global thermStartup
-            global thermPosOfVal
-            global thermTempString
-            global thermArray
-            global thermReadingComplete
             thermStartup = thisStartup
             thermPosOfVal = thisPosOfValue
             thermTempString = thisTempString
             thermArray = thisArray
             thermReadingComplete = thisReadingComplete
         elif(thisArduino==OVEN):
-            global ovenStartup
-            global ovenPosOfVal
-            global ovenTempString
-            global ovenArray
-            global ovenReadingComplete
             ovenStartup = thisStartup
             ovenPosOfVal = thisPosOfValue
             ovenTempString = thisTempString
@@ -109,13 +98,10 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
     else:
         thisReadingComplete = False
         if(thisArduino==0):
-            global pplReadingComplete
             pplReadingComplete = thisReadingComplete
         elif(thisArduino==1):
-            global thermReadingComplete
             thermReadingComplete = thisReadingComplete
         elif(thisArduino==2):
-            global ovenReadingComplete
             ovenReadingComplete = thisReadingComplete
             
 # Connect to the database
@@ -130,11 +116,9 @@ while True:
         readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
         if(pplReadingComplete):
             # Presist the read data to the database
-        	dao.insertRow(TABLES[PEOPLE], pplArray)
-			print(pplArray)
+            dao.insertRow(TABLES[PEOPLE], pplArray)
+            print(pplArray)
     except KeyboardInterrupt: 
-        exit()
-    finally:
-        # close the database connection
         dao.disConnect()
+        exit()        
     
