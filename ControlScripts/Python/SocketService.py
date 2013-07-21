@@ -2,16 +2,18 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+import json
 #import tornado.template
 
-#Method to ensure only 1 or 0 can be passed otherwise -1 is passed to indicate an error
-def validate(val):
-  if int(val) == 1:
-		return val
-	elif int(val) ==0:
-		return val
-	else:
-		return "-1"  
+def convert(input):
+    if isinstance(input, dict):
+        return {convert(key): convert(value) for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [convert(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input 
 
 class WSHandler(tornado.websocket.WebSocketHandler):
   def open(self):
@@ -20,11 +22,14 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
   def on_message(self, message):
     self.write_message("Updating...")
-    print 'received:', message
-    heating = validate(message[0])
-    lighting = validate(message[1])
-    oven = validate(message[2])
-    print "heating: "+heating+", lighting: "+lighting+" , oven: "+oven
+    print 'received:', message 
+    result = convert(json.loads(message))
+    for key, value in result.items():
+      print key, value
+    #heating = validate(message[0])
+    #lighting = validate(message[1])
+    #oven = validate(message[2])
+    #print "heating: "+heating+", lighting: "+lighting+" , oven: "+oven
     #updateHeatingStatus(heating)
     #updateLightingStatus(lighting)
     #updateOvenStatus(oven)
