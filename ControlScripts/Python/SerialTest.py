@@ -17,7 +17,8 @@ OVEN = 2
 # Global Variables for people counter stuff
 # This arduino number is 0
 #pplSerial = serial.Serial("COM5",9600)
-pplSerial = serial.Serial("/dev/ttyUSB0",9600)
+#pplSerial = serial.Serial("/dev/ttyUSB0",9600)
+pplSerial = serial.Serial("/dev/ttyACM0",9600)
 pplSerial.flush()
 pplStartup = True
 pplPosOfVal = 0
