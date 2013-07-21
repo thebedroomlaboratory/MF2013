@@ -6,6 +6,8 @@ from sys import exit
 import serial
 import dao
 import logicControl
+import SocketService
+import sharedVariables
 
 print("Setting up variables and USB serial connections")
 
@@ -49,6 +51,7 @@ ovenTempString = ""
 ovenArray = [ 0, 1 ]
 lastOven = [ 0, 1]
 ovenReadingComplete = False
+bagelSetting=0
 
 # Global array of tables
 TABLES = ['people', 'temp', 'oven']
@@ -143,6 +146,8 @@ def checkAndWrite():
 		#ovenSerial.write('0\n')
 		#ovenSerial.flush()
 
+background = SocketService.socketThread()
+background.start()
 while True:
 	try:
 		readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
@@ -161,5 +166,6 @@ while True:
 			print(thermArray)
 	except KeyboardInterrupt: 
 		dao.disConnect()
+		background.join()
 		exit()		
 	

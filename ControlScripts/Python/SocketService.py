@@ -3,7 +3,18 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import json
+import threading
+import time
+import sharedVariables
 #import tornado.template
+
+class socketThread(threading.Thread):
+	def __init__(self):
+		threading.Thread.__init__(self)
+	def run(self):
+		application.listen(9090)
+		print("yeeah")
+		tornado.ioloop.IOLoop.instance().start()
 
 def convert(input):
     if isinstance(input, dict):
@@ -26,6 +37,15 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     result = convert(json.loads(message))
     for key, value in result.items():
       print key, value
+      if (key == "heat_onoffswitch"):
+      	sharedVariables.heatOverride = value
+      	print("hhhhhhhhhhh")
+      elif (key == "light_onoffswitch"):
+      	sharedVariables.lightOverride = value
+      	print("lllllllllll")
+      elif (key == "oven_onoffswitch"):
+      	sharedVariables.bagelOverride = value
+      	print("lllllllllll")
     #heating = validate(message[0])
     #lighting = validate(message[1])
     #oven = validate(message[2])
@@ -43,6 +63,8 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-  application.listen(9090)
-  tornado.ioloop.IOLoop.instance().start()
-  print("hi")
+	background = socketThread()
+	background.start()
+	while(True):
+  		print("hi")
+		time.sleep(2)
