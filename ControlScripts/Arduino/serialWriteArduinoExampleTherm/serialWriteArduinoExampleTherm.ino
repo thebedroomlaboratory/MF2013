@@ -12,6 +12,9 @@ boolean input = false;
 boolean transmissionComplete = false;
 int sysStatus=0;
 int i=0;
+int override[] = {0,0,0,0,0};
+int lux[] = {149, 149, 160, 160, 160};
+int temp[] = {1700, 1900, 1900, 1900, 1900};
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -34,7 +37,14 @@ void loop() {
   // read the input pin:
 //  int buttonState = digitalRead(pushButton);
   // print out the state of the button:
-  Serial.print(i);
+  if (i==5)
+    i=0;
+  Serial.print(override[i]);
+  Serial.print("?");
+  Serial.print(lux[i]);
+  Serial.print("?");
+  Serial.print(temp
+  [i]);
   Serial.print("?");
   Serial.println(sysStatus);
   i+=1;

@@ -45,3 +45,4 @@ application = tornado.web.Application([
 if __name__ == "__main__":
   application.listen(9090)
   tornado.ioloop.IOLoop.instance().start()
+  print("hi")

@@ -6,7 +6,7 @@ if [ -z "$3" ]; then
     exit
 fi
 
-apt-get install git python python-serial python-tornado meld lamp-server^ arduino
+apt-get install git python python-serial python-tornado meld lamp-server^ arduino phpmyadmin
 su - $1
 cd ~
 git clone https://github.com/thebedroomlaboratory/MF2013.git
@@ -16,6 +16,7 @@ git config --global credential.helper cache
 git config credential.helper 'cache --timeout=3600'
 cd ~/sketchbook
 ln -s ~/MF2013/ControlScripts/Arduino/serialWriteArduinoExamplePpl
+ln -s ~/MF2013/ControlScripts/Arduino/serialWriteArduinoExampleTherm
 ln -s ~/MF2013/ThermostatLightSensor/Thermostat
 mkdir libraries
 cd libraries/
