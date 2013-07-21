@@ -77,4 +77,3 @@ function fitToContainer(canvas){
   canvas.width  = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
 }
-
