@@ -1,5 +1,9 @@
-# Script which reads and prints all of the data received over
-# USB from the Arduino
+# Open-source program for interacting with three Arduinos
+# in order to automatically control heating, lighting and
+# cooking in the home.
+# 
+# Author: The Bedroom Laboratory, Copyright 2013
+# License: Creative Commons
 
 from time import sleep
 from sys import exit
@@ -7,10 +11,8 @@ import serial
 import dao
 import logicControl
 import SocketService
+import threading
 import sharedVariables
-
-print("Setting up variables and USB serial connections")
-
 
 # Global Constants of Arduino numbers
 PEOPLE = 0
@@ -56,13 +58,9 @@ bagelSetting=0
 # Global array of tables
 TABLES = ['people', 'temp', 'oven']
 
-
-print("Ready to read!")
-
 def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempString, thisArray, thisReadingComplete):	
 	global pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete, thermStartup, thermPosOfVal, thermTempString, thermArray, thermReadingComplete, ovenStartup, ovenPosOfVal, ovenTempString, ovenArray, ovenReadingComplete
-
-						
+	# Check if data is waiting to be read (asynchronous reading without blocking)						
 	if (thisSerial.inWaiting() > 0):
 		val = thisSerial.read()
 		if (val == '\n'):
@@ -111,10 +109,6 @@ def readSerial(thisArduino, thisSerial, thisStartup, thisPosOfValue, thisTempStr
 			thermReadingComplete = thisReadingComplete
 		elif(thisArduino==2):
 			ovenReadingComplete = thisReadingComplete
-			
-# Connect to the database
-dao.connect()
-
 
 def checkAndWrite():
 	global lastPpl, lastTherm, lastOven
@@ -146,26 +140,38 @@ def checkAndWrite():
 		#ovenSerial.write('0\n')
 		#ovenSerial.flush()
 
-background = SocketService.socketThread()
-background.start()
-while True:
-	try:
-		readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
-		if(pplReadingComplete):
-			lastPpl=pplArray
-			# Presist the read data to the database
-			dao.insertRow(TABLES[PEOPLE], pplArray)
-			checkAndWrite()
-			print(pplArray)
-		readSerial(THERMOSTAT, thermSerial, thermStartup, thermPosOfVal, thermTempString, thermArray, thermReadingComplete)
-		if(thermReadingComplete):
-			lastTherm=thermArray
-			# Presist the read data to the database
-			#dao.insertRow(TABLES[PEOPLE], thermArray)
-			checkAndWrite()
-			print(thermArray)
-	except KeyboardInterrupt: 
-		dao.disConnect()
-		background.join()
-		exit()		
+if __name__ == "__main__":
+	print("Home automation beginning...")
+	# Connect to the database
+	dao.connect()
+	# Start Tornado Server in new Thread
+	t = threading.Thread(target=SocketService.start_tornado)	
+	t.start()
+	while True:
+		try:
+			# Try Reading and parsing from People Counter
+			readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
+			if(pplReadingComplete):
+				lastPpl=pplArray
+				# Save the read data to the database
+				dao.insertRow(TABLES[PEOPLE], pplArray)
+				# Perform control operation for all devices
+				checkAndWrite()
+				print(pplArray)
+			# Try Reading and parsing from Thermostat
+			readSerial(THERMOSTAT, thermSerial, thermStartup, thermPosOfVal, thermTempString, thermArray, thermReadingComplete)
+			if(thermReadingComplete):
+				lastTherm=thermArray
+				# Save the read data to the database
+				#dao.insertRow(TABLES[PEOPLE], thermArray)
+				# Perform control operation for all devices
+				checkAndWrite()
+				print(thermArray)
+		except KeyboardInterrupt:
+			# Gracefully close all connections
+			dao.disConnect()
+			SocketService.stop_tornado()
+			t.join()
+			print("Program closing!")
+			exit()
 	

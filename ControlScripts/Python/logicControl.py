@@ -3,10 +3,7 @@
 # This script is used for all the control logic
 
 import sharedVariables
-# Global Constants of Arduino numbers
-#PEOPLE = 0
-#THERMOSTAT = 1
-#OVEN = 2
+
 HEAT_TIMEOUT=10
 HEAT_THRESHOLD=1800
 HEAT_FREEZING=500
@@ -18,8 +15,7 @@ LIGHT_THRESHOLD=150
 lightOverrideTimer=0
 lightSetting=0
 
-bagelOverride=1
-bagelOverrideTimer=0
+bagelSetting=0
 
 def heating(pplArray, thermArray):
 	# heating logic
@@ -62,7 +58,7 @@ def light(pplArray, thermArray):
 
 def bagel(ovenArray):
 	# bagel oven logic
-	global bagelOverrideTimer, bagelSetting
+	global bagelSetting
 	if (sharedVariables.bagelOverride) and (not ovenArray[1]):
 		print("Bagel Cooking")
 		bagelSetting=True
