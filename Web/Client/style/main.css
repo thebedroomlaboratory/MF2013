@@ -1,3 +1,84 @@
+#house_div{
+	width: 100%;
+	padding: .3%;
+
+}
+
+.house_room{
+	
+
+	 /* Give the distance for floated items */
+    
+    float:left;
+    /* Width and height for each item */
+    width:49%;
+    height:49%;
+    /* Text align and background color */
+    text-align:center;
+    /*	 For Dev only	*/
+    background-color:#cdc;
+    border: 1px solid black;
+    /*    End of For Dev only */
+
+    margin: auto;
+}
+
 #controlCenter{
 	display: inline;
 }
+
+#roomLightTemp{
+	display: inline;
+}
+#light_indicator_container{
+
+}
+
+.graph_container{
+	padding:0;
+	width: 100%;
+	height:70%;
+}
+#graph_container div{
+	padding: 10px;
+
+}
+
+
+#light-bulb	{
+ 	width:150px; 
+ 	height:150px; 
+ 	top:20%; 
+ 	left:70%; 
+ 	background:url(imgs/lightbulb.png) no-repeat -150px 0; 
+ 	z-index:1; 
+ }
+
+.ccInfo{
+	width: 98%;
+	height: 30%;
+	background-color: white;
+    border: 1px solid black;
+    margin: 1%;
+
+}
+.ccInfo p{
+	margin: 0;
+	text-align: left;
+	padding-left: 10px;
+
+}
+
+.day{
+	background-color: white;
+	color: black;
+}
+
+.night{
+	background-color: black;
+	color: white;
+}
+#controlCenter{
+
+}
+
