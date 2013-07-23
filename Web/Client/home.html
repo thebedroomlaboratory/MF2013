@@ -59,35 +59,17 @@
           <!-- End of Thermostat -->
 
 
-         <div class="house_room" id="counterDisplay"></div>
-        
+         <div class="house_room" id="counterDisplay">
 
-
-         <div class="house_room" id="ovenDisplay">
-           
            <div class="graph_container">
-              <div id="Oven_Canvas_container" style="float:left;width: 250px; height: 150px;">
+              <div id="peopleCounter_Canvas_container" style="float:left;width: 250px; height: 150px;">
                   
-                 <canvas id="Oven_Line_chart">
+                 <canvas id="peopleCounter_Line_chart">
                     
                  </canvas>
                </div>
-
-               <div id="oven_temp_container" style="float:left;width: 250px; height: 150px;">
-
-                    <canvas id="oven_temp_chart">
-                    
-                    </canvas>
-
-               </div>   
             </div>
-         </div>
-        
-
-         <!-- Control Center: contains the 3 toggles for Heat, Light, Oven control -->
-         <div class="house_room" id="controlCenter">
-            
-            <!-- End of heating_Controls -->
+            <!-- light_Controls -->
             <div id="light_Controls" class="control">
                <div class="controlLabel"> 
                   <label style="display:inline" style="position:relative;top:-10px" > Lights:</label>
@@ -108,28 +90,75 @@
                   </div>
                </div>
             </div>
-            <!-- End of hlight_Controls -->
-            <div id="oven_Controls" class="control">
-               <div class="controlLabel"> 
-                  <label style="display:inline" style="position:relative;top:-10px"> Oven:</label>
-               </div>
-               <div class="sliderWrapper">
-                  <div class="onoffswitch">
-                     <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox socketSwitch" id="oven_onoffswitch" checked>
-                     <label class="onoffswitch-label" for="oven_onoffswitch">
-                        <div class="onoffswitch-inner">
-                           <div class="onoffswitch-active">
-                              <div class="onoffswitch-switch">ON</div>
-                           </div>
-                           <div class="onoffswitch-inactive">
-                              <div class="onoffswitch-switch">OFF</div>
-                           </div>
+            <!-- End of light_Controls -->
+         </div>
+        
+
+
+         <div class="house_room" id="ovenDisplay">
+           
+           <div class="graph_container">
+              <div id="Oven_Canvas_container" style="float:left;width: 250px; height: 150px;">
+                  
+                 <canvas id="Oven_Line_chart">
+                    
+                 </canvas>
+                 <div>
+                    <label>Time:</label><input id="timerInput" type="number" /><button onclick="timer($('#timerInput').val())"> Go!</button>
+                 </div>
+                  <div id="oven_Controls" class="control">
+                    <div class="controlLabel"> 
+                      <label style="display:inline" style="position:relative;top:-10px"> Oven:</label>
+                    </div>
+                     <div class="sliderWrapper">
+                        <div class="onoffswitch">
+                           <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox socketSwitch" id="oven_onoffswitch" checked>
+                           <label class="onoffswitch-label" for="oven_onoffswitch">
+                              <div class="onoffswitch-inner">
+                                 <div class="onoffswitch-active">
+                                    <div class="onoffswitch-switch">ON</div>
+                                 </div>
+                                 <div class="onoffswitch-inactive">
+                                    <div class="onoffswitch-switch">OFF</div>
+                                 </div>
+                              </div>
+                           </label>
                         </div>
-                     </label>
-                  </div>
-               </div>
+                     </div>
             </div>
             <!-- End of hlight_Controls -->
+               </div>
+
+               <div id="oven_temp_container" style="float:left;width: 250px; height: 150px;">
+
+                    <canvas id="oven_temp_chart">
+                    
+                    </canvas>
+
+               </div>   
+            </div>
+         </div>
+        
+
+         <!-- Control Center: contains the 3 toggles for Heat, Light, Oven control -->
+         <div class="house_room" id="controlCenter">
+            
+            <div class="ccInfo">
+              <p>Temp: <span id="currentTemp"></span></p>
+              <p><span id="someneHome_indicator"></span>  -&gt; heating: <span id="heating_status_display">heating_status</span> </p>
+
+            </div>
+            
+            <div class="ccInfo night">
+              <p>Its <span id="dayNight_indicator"></span> Outside &amp; there is <span id="people_count_indicator"></span> people home</p>
+              <p>Lights are: <span id="lights_indicator"></span></p> 
+            </div>
+
+            <div class="ccInfo">
+              <p>Bagle status: <span id="bagelStatus"></span> </p>
+              <p id="cookingTime_indicator"></p>
+            </div>
+           
          </div>
          <!--End of controlCenter -->
       </div>
