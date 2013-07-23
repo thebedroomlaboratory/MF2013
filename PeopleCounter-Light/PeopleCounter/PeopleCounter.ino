@@ -1,27 +1,20 @@
-//#include "IRremote.h"
 #include "LowPower.h"
-#include "Adafruit_GFX.h"
-#include "Adafruit_PCD8544.h"
 
-// pin 7 - Serial clock out (SCLK) 9
-// pin 6 - Serial data out (DIN) 8
-// pin 5 - Data/Command select (D/C) 7
-// pin 8 - LCD chip select (CS) 6
-// pin 9 - LCD reset (RST) 5
-Adafruit_PCD8544 display = Adafruit_PCD8544(9, 8, 7, 6, 5);
-
-#define PIN_DETECT 12
-#define PIN_IR 3
-#define REC_POWER 13
-#define SCREEN_POWER 10
-#define BUT1 2
-#define BUT2 4
+#define IR_LED 3
+#define DETECT1SENSE 4
+#define DETECT1POWER 5
+#define RESET 6
+#define RELAY 7
+#define DETECT2SENSE 8
+#define DETECT2POWER 9
+#define RESETSUCCESS 13
 
 int x = 0;
-boolean lastPulseSuccess = true;
-boolean thisPulse = false;
-boolean screenChecked = false;
-//IRsend irsend;
+boolean lastPulseSuccess1 = true;
+boolean thisPulse1 = false;
+boolean lastPulseSuccess2 = true;
+boolean thisPulse2 = false;
+//boolean screenChecked = false;
 
 void setPinsLow(){
   for (byte i = 0; i <= 13; i++)
@@ -29,79 +22,30 @@ void setPinsLow(){
     pinMode (i, OUTPUT);    // changed as per below
     digitalWrite (i, LOW);  //     ditto
   }
-  pinMode(PIN_DETECT, INPUT);
-  pinMode(BUT1, INPUT);
-  pinMode(BUT2, INPUT);
-//  Serial.println("Pins set as Low outputs");
+  pinMode(DETECT1SENSE, INPUT);
+  pinMode(DETECT2SENSE, INPUT);
+  pinMode(RESET, INPUT);
 }
 
-void turnOffScreen(){
-  digitalWrite(SCREEN_POWER, LOW);
-  for (byte i = 5; i <= 9; i++)
-  {
-    digitalWrite (i, LOW);  //     ditto
-  }
-}
-
-boolean screenCheck(){
-  // Enable pullup for open connection
-  digitalWrite(BUT1, HIGH);
-  // Test to see if button connection closed
-  screenChecked=digitalRead(BUT1);
-//  Serial.println("oops");
-  if(screenChecked==LOW){
-    // Configure LCD Screen and enable power to it.
-//    Serial.println("checking screen");
-    digitalWrite(SCREEN_POWER, HIGH);
-    display.begin();
-    display.clearDisplay();
-    display.setTextColor(BLACK);
-    display.setCursor(0,0);
-    display.setTextSize(2);
-    display.print("Passes: ");
-    display.println(x);
-    display.display();
-    delay(5000);
-    resetCheck();
-    // Turn screen off again
-//    turnOffScreen();
-  }
-  // Disable pullup resistor
-  digitalWrite(BUT1, LOW);
-  return screenChecked;
-}
 
 void resetCheck(){
-  // Check if reset button is pressed
-  digitalWrite(BUT2, HIGH);
-  if(digitalRead(BUT2)==LOW){
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.println("Reset in: 3s");
-    display.display();
+  // Check if reset switch is on
+  if(digitalRead(RESET)==HIGH){
     delay(1000); 
-    display.clearDisplay();
-    if(digitalRead(BUT2)==LOW){
-      display.println("Reset in: 2s");
-      display.display();
+    if(digitalRead(RESET)==HIGH){
       delay(1000); 
-      display.clearDisplay();
-      if(digitalRead(BUT2)==LOW){
-        display.println("Reset in: 1s");
-        display.display();
+      if(digitalRead(RESET)==HIGH){
         delay(1000); 
-        display.clearDisplay();
-        if(digitalRead(BUT2)==LOW){
+        if(digitalRead(RESET)==HIGH){
           x=0;
-          display.println("Reset success!");
-          display.display();
+          // Flash internal LED to show that value has been reset
+          digitalWrite(RESETSUCCESS, HIGH);
           delay(1000);
+          digitalWrite(RESETSUCCESS, LOW);
         }
       }
     }
   }
-  // Disable pullup resistor again & print current count
-  digitalWrite(BUT2, LOW);
 }
 
 void enableIROut(int val){
@@ -116,7 +60,8 @@ void enableIROut(int val){
 
 void enablePWM(){
 //  Serial.println("Enabling PWM");
-  digitalWrite (REC_POWER, HIGH);
+  digitalWrite (DETECT1POWER, HIGH);
+  digitalWrite (DETECT2POWER, HIGH);
   TCCR2A |= _BV(COM2B1);
   delayMicroseconds(500);
 }
@@ -125,8 +70,9 @@ void disablePWM(){
 //  Serial.println("Disabling PWM");
   TCCR2A &= ~(_BV(COM2B1));
 //  delayMicroseconds(0);
-  digitalWrite (PIN_IR, LOW);
-  digitalWrite (REC_POWER, LOW);
+  digitalWrite (IR_LED, LOW);
+  digitalWrite (DETECT1POWER, LOW);
+  digitalWrite (DETECT2POWER, LOW);
 }
 
 void setup()
@@ -146,36 +92,35 @@ void loop() {
 //  Serial.print("On at: ");
 //  Serial.print(millis());
   // Display current pass count on screen and check to see if reset required
-  if(screenCheck()){
+//  if(screenCheck()){
+  resetCheck();
 //    irsend.mark(0);
-    enablePWM();
-    thisPulse=digitalRead(PIN_DETECT);
+  enablePWM();
+  thisPulse1=digitalRead(DETECT1SENSE);
+  thisPulse2=digitalRead(DETECT2SENSE);
 //    delay(1000);
-    disablePWM();
+  disablePWM();
 //    irsend.space(0);
 //    Serial.print("Off at: ");
 //    Serial.println(millis());
-    display.clearDisplay();
-    if (thisPulse){
-      if(lastPulseSuccess){
-        x++;
-        lastPulseSuccess=false;
-        display.print("Break: ");
-//        Serial.print(millis());
-//        Serial.print(" - Beam Broken: ");
-        display.println(x);
+  if (thisPulse1){
+    if(lastPulseSuccess1){
+      x++;
+      lastPulseSuccess1=false;
+//      display.print("Break: ");
+//      display.println(x);
 //        Serial.println(" times");
-       }
-       else {
-         display.println("Still broken");
-       }
     }
-    else {
-      display.println("Received");
-      lastPulseSuccess=true;
-    }
-    display.display();
+//    else {
+//      display.println("Still broken");
+//    }
   }
+  else {
+//    display.println("Received");
+    lastPulseSuccess1=true;
+  }
+  //display.display();
+
 //  Serial.println(digitalRead(PIN_DETECT));
 //  Serial.print("Off at: ");
 //  Serial.println(x);
