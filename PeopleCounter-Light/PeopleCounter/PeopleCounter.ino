@@ -1,5 +1,3 @@
-#include "LowPower.h"
-
 #define IR_LED 3
 #define DETECT1SENSE 4
 #define DETECT1POWER 5
@@ -9,11 +7,16 @@
 #define DETECT2POWER 9
 #define RESETSUCCESS 13
 
-int x = 0;
-boolean lastPulseSuccess1 = true;
+int count = 0;
+boolean FLAG1 = false;
+boolean LASTFLAG1 = false;
 boolean thisPulse1 = false;
-boolean lastPulseSuccess2 = true;
+
+boolean FLAG2 = false;
+boolean LASTFLAG2 = false;
 boolean thisPulse2 = false;
+boolean input = false;         // a string to hold incoming data
+boolean transmissionComplete = false;  // whether the string is complete
 //boolean screenChecked = false;
 
 void setPinsLow(){
@@ -37,7 +40,7 @@ void resetCheck(){
       if(digitalRead(RESET)==HIGH){
         delay(1000); 
         if(digitalRead(RESET)==HIGH){
-          x=0;
+          count=0;
           // Flash internal LED to show that value has been reset
           digitalWrite(RESETSUCCESS, HIGH);
           delay(1000);
@@ -77,6 +80,7 @@ void disablePWM(){
 
 void setup()
 {
+  Serial.begin(9600);
   setPinsLow();
   
   ADCSRA &= ~(1<<ADEN); //Disable ADC
@@ -84,7 +88,7 @@ void setup()
   DIDR0 = 0x3F; //Disable digital input buffers on all ADC0-ADC5 pins
   DIDR1 = (1<<AIN1D)|(1<<AIN0D); //Disable digital input buffer on AIN1/0
   enableIROut(38);
-//  irsend.enableIROut(38);
+////  irsend.enableIROut(38);
 }
 
 void loop() {
@@ -92,40 +96,82 @@ void loop() {
 //  Serial.print(millis());
   // Display current pass count on screen and check to see if reset required
 //  if(screenCheck()){
+  if (transmissionComplete) {
+    if(input)
+      digitalWrite(RELAY,HIGH);
+    else
+      digitalWrite(RELAY,LOW); 
+    // clear the string:
+    transmissionComplete = false;
+  }
   resetCheck();
 //    irsend.mark(0);
   enablePWM();
-  delay(1000);
   thisPulse1=digitalRead(DETECT1SENSE);
   thisPulse2=digitalRead(DETECT2SENSE);
-//    delay(1000);
+//  delay(1000);
   disablePWM();
-//    irsend.space(0);
-//    Serial.print("Off at: ");
-//    Serial.println(millis());
+
+  LASTFLAG1=FLAG1;
   if (thisPulse1){
-    if(lastPulseSuccess1){
-      x++;
-      lastPulseSuccess1=false;
-//      display.print("Break: ");
-//      display.println(x);
-//      Serial.println(x);
-    }
-//    else {
-//      display.println("Still broken");
-//    }
+  // Beam Blocked
+    FLAG1=true;
   }
   else {
-//    display.println("Received");
-    lastPulseSuccess1=true;
+//  Beam Received
+    FLAG1=false;
   }
+  
+  LASTFLAG2=FLAG2;
+  if (thisPulse2){
+  // Beam Blocked
+    FLAG2=true;
+  }
+  else {
+//  Beam Received
+    FLAG2=false;
+  }
+  
+  if(FLAG1 && FLAG2){
+    if(!LASTFLAG1 && LASTFLAG2){
+      if(count>0)
+        count--;
+      Serial.print(count);
+      Serial.print("?");
+      Serial.println(input);
+    }
+    else if(LASTFLAG1 && !LASTFLAG2){
+      count++;
+      Serial.print(count);
+      Serial.print("?");
+      Serial.println(input);
+    }
+  }
+
   //display.display();
 
 //  Serial.println(digitalRead(PIN_DETECT));
-  Serial.begin(9600);
-  Serial.print(x);
-  Serial.print("?");
-  Serial.println("1");
-  Serial.end();
-  LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF);
+  
+
+  delay(10);
+}
+
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read(); 
+    // add it to the inputString:
+    
+    // if the incoming character is a newline, set a flag
+    // so the main loop can do something about it:
+    if (inChar != '\n') {
+      if (inChar == '0')
+        input=false;
+      else if (inChar == '1')
+        input=true;
+    }
+    else {
+      transmissionComplete = true;
+    }
+  }
 }
