@@ -77,7 +77,6 @@ void disablePWM(){
 
 void setup()
 {
-//  Serial.begin(9600);
   setPinsLow();
   
   ADCSRA &= ~(1<<ADEN); //Disable ADC
@@ -96,6 +95,7 @@ void loop() {
   resetCheck();
 //    irsend.mark(0);
   enablePWM();
+  delay(1000);
   thisPulse1=digitalRead(DETECT1SENSE);
   thisPulse2=digitalRead(DETECT2SENSE);
 //    delay(1000);
@@ -109,7 +109,7 @@ void loop() {
       lastPulseSuccess1=false;
 //      display.print("Break: ");
 //      display.println(x);
-//        Serial.println(" times");
+//      Serial.println(x);
     }
 //    else {
 //      display.println("Still broken");
@@ -122,8 +122,10 @@ void loop() {
   //display.display();
 
 //  Serial.println(digitalRead(PIN_DETECT));
-//  Serial.print("Off at: ");
-//  Serial.println(x);
-//  Serial.flush();
-  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+  Serial.begin(9600);
+  Serial.print(x);
+  Serial.print("?");
+  Serial.println("1");
+  Serial.end();
+  LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF);
 }
