@@ -1,10 +1,9 @@
+#define DETECT1SENSE 2
 #define IR_LED 3
-#define DETECT1SENSE 4
-#define DETECT1POWER 5
+#define DETECT2SENSE 4
+#define DETECTPOWER 5
 #define RESET 6
 #define RELAY 7
-#define DETECT2SENSE 8
-#define DETECT2POWER 9
 #define RESETSUCCESS 13
 
 int count = 0;
@@ -63,8 +62,8 @@ void enableIROut(int val){
 
 void enablePWM(){
 //  Serial.println("Enabling PWM");
-  digitalWrite (DETECT1POWER, HIGH);
-  digitalWrite (DETECT2POWER, HIGH);
+  digitalWrite (DETECTPOWER, HIGH);
+//  digitalWrite (DETECT2POWER, HIGH);
   TCCR2A |= _BV(COM2B1);
   delayMicroseconds(500);
 }
@@ -74,8 +73,8 @@ void disablePWM(){
   TCCR2A &= ~(_BV(COM2B1));
 //  delayMicroseconds(0);
   digitalWrite (IR_LED, LOW);
-  digitalWrite (DETECT1POWER, LOW);
-  digitalWrite (DETECT2POWER, LOW);
+  digitalWrite (DETECTPOWER, LOW);
+//  digitalWrite (DETECT2POWER, LOW);
 }
 
 void setup()
@@ -153,7 +152,7 @@ void loop() {
 //  Serial.println(digitalRead(PIN_DETECT));
   
 
-  delay(10);
+  delay(100);
 }
 
 void serialEvent() {
