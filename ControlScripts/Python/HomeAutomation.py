@@ -8,10 +8,11 @@
 from time import sleep
 from sys import exit
 import serial
+import threading
+import copy
 import dao
 import logicControl
 import SocketService
-import threading
 import sharedVariables
 
 # Global Constants of Arduino numbers
@@ -41,6 +42,7 @@ thermPosOfVal = 0
 thermTempString = ""
 thermArray = [ 0, 0, 0, 0]
 lastTherm = [ 0, 0, 0, 0]
+lastTherm2 = [ 0, 0, 0, 0]
 thermReadingComplete = False
 
 # Global Variables for Bagel Oven
@@ -152,7 +154,12 @@ if __name__ == "__main__":
 			# Try Reading and parsing from People Counter
 			readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
 			if(pplReadingComplete):
-				lastPpl=pplArray
+				# Check if thermostat physical switch has changed
+				# If so, trigger override shared variable
+				if (lastTherm2[0] != lastTherm[0]):
+					sharedVariables.heatOverride=True
+					lastTherm2 = copy.deepcopy(lastTherm)
+				lastPpl=copy.deepcopy(pplArray)
 				# Save the read data to the database
 				dao.insertRow(TABLES[PEOPLE], pplArray)
 				# Perform control operation for all devices
@@ -161,7 +168,13 @@ if __name__ == "__main__":
 			# Try Reading and parsing from Thermostat
 			readSerial(THERMOSTAT, thermSerial, thermStartup, thermPosOfVal, thermTempString, thermArray, thermReadingComplete)
 			if(thermReadingComplete):
-				lastTherm=thermArray
+				lastTherm2 = copy.deepcopy(lastTherm)
+				lastTherm=copy.deepcopy(thermArray)
+				# Check if thermostat physical switch has changed
+				# If so, trigger override shared variable
+				if (lastTherm2[0] != lastTherm[0]):
+					sharedVariables.heatOverride=True
+					lastTherm2 = copy.deepcopy(lastTherm)
 				# Save the read data to the database
 				#dao.insertRow(TABLES[PEOPLE], thermArray)
 				# Perform control operation for all devices
