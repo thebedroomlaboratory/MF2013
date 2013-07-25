@@ -100,11 +100,11 @@
 // ***** INCLUDES *****
 #include <LiquidCrystal.h>
 #ifdef	USE_MAX31855
-#include <MAX31855.h>
+#include "MAX31855.h"
 #else
 #include <max6675.h>
 #endif
-#include <PID_v1.h>
+#include "PID_v1.h"
 
 // ***** TYPE DEFINITIONS *****
 typedef enum REFLOW_STATE
@@ -628,7 +628,9 @@ void loop()
     digitalWrite(ssrPin, LOW);
   }
   }
-  else()
-  {delay(1000)}
+  else
+  {
+    delay(1000);
+  }
 }
 
