@@ -20,10 +20,11 @@ PEOPLE = 0
 THERMOSTAT = 1
 OVEN = 2
 
+# Global Constants initialization
+thisPosOfValue=0
+
 # Global Variables for people counter stuff
 # This arduino number is 0
-#pplSerial = serial.Serial("COM5",9600)
-#pplSerial = serial.Serial("/dev/ttyUSB0",9600)
 pplSerial = serial.Serial("/dev/ttyACM0",9600)
 pplSerial.flush()
 pplStartup = True
@@ -35,7 +36,7 @@ pplReadingComplete = False
 
 # Global Variables for Thermostat
 # This arduino number is 1
-thermSerial = serial.Serial("/dev/ttyACM1",9600)
+thermSerial = serial.Serial("/dev/ttyUSB0",9600)
 thermSerial.flush()
 thermStartup = True
 thermPosOfVal = 0
@@ -47,8 +48,8 @@ thermReadingComplete = False
 
 # Global Variables for Bagel Oven
 # This arduino number is 2
-#ovenSerial = serial.Serial("COM10",9600)
-#ovenSerial.flush()
+ovenSerial = serial.Serial("/dev/ttyACM1",9600)
+ovenSerial.flush()
 ovenStartup = True
 ovenPosOfVal = 0
 ovenTempString = ""
@@ -135,12 +136,12 @@ def checkAndWrite():
 	# Manage oven
 	if(logicControl.bagel(lastOven)):
 		print("Oven On")
-		#ovenSerial.write('1\n')
-		#ovenSerial.flush()
+		ovenSerial.write('1\n')
+		ovenSerial.flush()
 	else:
 		print("Oven Off")
-		#ovenSerial.write('0\n')
-		#ovenSerial.flush()
+		ovenSerial.write('0\n')
+		ovenSerial.flush()
 
 if __name__ == "__main__":
 	print("Home automation beginning...")
@@ -150,7 +151,7 @@ if __name__ == "__main__":
 	t = threading.Thread(target=SocketService.start_tornado)	
 	t.start()
 	while True:
-		try:
+		try:	
 			# Try Reading and parsing from People Counter
 			readSerial(PEOPLE, pplSerial, pplStartup, pplPosOfVal, pplTempString, pplArray, pplReadingComplete)
 			if(pplReadingComplete):
@@ -176,10 +177,22 @@ if __name__ == "__main__":
 					sharedVariables.heatOverride=True
 					lastTherm2 = copy.deepcopy(lastTherm)
 				# Save the read data to the database
-				#dao.insertRow(TABLES[PEOPLE], thermArray)
+				dao.insertRow(TABLES[THERMOSTAT], thermArray)
 				# Perform control operation for all devices
 				checkAndWrite()
 				print(thermArray)
+			readSerial(OVEN, ovenSerial, ovenStartup, ovenPosOfVal, ovenTempString, ovenArray, ovenReadingComplete)
+			if(ovenReadingComplete):
+				# Check if thermostat physical switch has changed
+				# If so, trigger override shared variable
+				if (lastTherm2[0] != lastTherm[0]):
+					sharedVariables.heatOverride=True
+					lastTherm2 = copy.deepcopy(lastTherm)
+				# Save the read data to the database
+				dao.insertRow(TABLES[OVEN], ovenArray)
+				# Perform control operation for all devices
+				checkAndWrite()
+				print(ovenArray)			
 		except KeyboardInterrupt:
 			# Gracefully close all connections
 			dao.disConnect()
