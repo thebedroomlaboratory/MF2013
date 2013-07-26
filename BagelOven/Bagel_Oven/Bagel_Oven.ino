@@ -288,7 +288,7 @@ void setup()
   lcd.clear();
 
   // Serial communication at 57600 bps
-  Serial.begin(57600);
+  Serial.begin(9600);
 
   // Turn off LED (active low)
   digitalWrite(ledRedPin, HIGH);
