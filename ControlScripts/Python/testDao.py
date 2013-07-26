@@ -1,15 +1,15 @@
 import dao
-
+import random
 
 dao.connect()
 
-data=[6, 1]
+data=[random.randint(1, 10), random.randint(1, 10)]
 dao.insertRow('people', data)
 
-data=[6, 1]
+data=[random.randint(1, 10), random.randint(1, 10)]
 dao.insertRow('oven', data)
 
-data=[6, 1, 3, 5]
+data=[random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)]
 dao.insertRow('temp', data)
 
 
