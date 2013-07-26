@@ -9,7 +9,7 @@ include "mysql/class.MfSQL.php";
  		var json = <?php			
  			$mfSql = new Mf_SQL();
  			$mySql = $mfSql->getMySql();
- 			$oven = $mySql->Select('oven');
+ 			$oven = $mySql->Select('oven','','time DESC','10');
  			echo json_encode($oven);
  		?>;
  		var jsonString = JSON.stringify(json);

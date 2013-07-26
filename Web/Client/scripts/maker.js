@@ -15,10 +15,10 @@ setInterval( function(){updateCCInfo();}
 });
 function updateCCInfo(){
 	 getPeopleCounter();
-	    setCurrentTemp();	    
-	    setSomeoneHome();
-	    setDayNight();
-	    setBagelStatus();
+	 setCurrentTemp();	    
+	 setSomeoneHome();
+	 setDayNight();
+	 setBagelStatus();
 }
 function setCurrentTemp(){
 	$('#currentTemp').html('16 degrees C');

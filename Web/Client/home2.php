@@ -6,6 +6,7 @@
       <script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
       <script type="text/javascript" src="scripts/controlCenter.js" ></script>
       <script type="text/javascript" src="scripts/Chart.js"></script>
+      <script type="text/javascript" src="scripts/options.js"></script>
       <script type="text/javascript">
         /**
          * Prevents jQuery code from running before the document is finished loading
@@ -61,20 +62,21 @@
         function plotThermostatGraph(){
           var json = getLast10DescendingOvenValues();
           // x axis data
-          var dateRange = new Array();
+          var index = new Array();
           // y axis data
           var tempRange = new Array();
           // loop over the data
           for(var i=0; i<json.length; i++){
             var elm = json[i];
-            dateRange[i] = new Date(elm.time).getHours();
+            index[i] = i;
             tempRange[i] = parseInt(elm.temp);
           }
-          var data = createGraphData(dateRange, tempRange);
+          var data = createGraphData(index, tempRange);
           // get canvas context
           var ctx = getContextOfCanvasElement('thermostat_chart');
           new Chart(ctx).Line(data);
         }
+
 
         /**
          * Create graph data
