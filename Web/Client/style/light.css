@@ -1,492 +1,125 @@
-#house_div{
-  width: 100%;
-	padding: .3%;
+
+/* LIGHT */
+#light_indicator_container{
+	width: 50%; 
+	height: 80%; 
+	margin:auto;
+	float:left;
+	 position: relative;
 
 }
+ #sun{
+ 	position: relative;
+ 	top:30%;
+ 	left:30%;
+		width: 100px;
+		height: 100px;
+		border-radius:50%;
+   /* background-color:red;*/
+	}
 
-.house_room{
+	#outerSun{
 	
 
-	 /* Give the distance for floated items */
-    
-    float:left;
-    /* Width and height for each item */
-    width:49%;
-    height:49%;
-    /* Text align and background color */
-    text-align:center;
-    /*	 For Dev only	*/
-    background-color:#cdc;
-    border: 1px solid black;
-    /*    End of For Dev only */
-/* LIGHT */
-#light {
-	width:100px;
-	height:100px;
-	display:block;
-	position:relative;
-	top:90%;
-	left:70%;
-	margin-top:-50px;
-	margin-left:-50px;
-	border-radius:60px;
-	background:#ED9;
-	border-collapse:separate; /* for IE9 and later */
 	}
-#light:before {
-	content:"";
-	width:120px;
-	height:120px;
-	display:block;
-	position:relative;
-	top:0%;
-	left:40%;
-	margin-top:-50px;
-	margin-left:-50px;
-	border-radius:60px;
-	background:#ED9;
-	box-shadow:inset 0 0 24px 12px #FFF, 0 0 2px 1px #FFF;
-	border-collapse:separate; /* for IE9 and later */
+	#innerSun{
+		width: 80px; height: 80px;
+		position:relative;
+		top: 10px;
+		left: 10px; 
+    border-radius:50%;
+   background-color:yellow; 
+    -webkit-box-shadow:0 0 30px 30px yellow;
+	box-shadow:0 0 30px 30px yellow;
+   z-index: 1
+	}
+	
+	#innerSun.Lux-0{
+		width: 80px; height: 80px;
+		position:relative;
+		top: 10px;
+		left: 10px; 
+    border-radius:50%;
+		background-color:#B4B494;/*#F3F781*/
+		 -webkit-box-shadow:0 0 0px 0px #B4B494;
+	box-shadow:0 0 0px 0px #B4B494;
+	}
+	#innerSun.Lux-50{
+		width: 80px; height: 80px;
+		position:relative;
+		top: 10px;
+		left: 10px; 
+    border-radius:50%;
+		background-color:#BDBD65;/*#F3F781*/
+		 -webkit-box-shadow:0 0 5px 5px #BDBD65;
+	box-shadow:0 0 5px 5px #BDBD65;
+	}
+	#innerSun.Lux-100{
+		 
+   background-color:#C4C46F; 
+    -webkit-box-shadow:0 0 10px 10px #C4C46F;
+	box-shadow:0 0 10px 10px #C4C46F;
+	
+	}
+	#innerSun.Lux-150{
+		background-color:#C4C460; 
+    	-webkit-box-shadow:0 0 15px 15px #C4C460;
+		box-shadow:0 0 15px 15px #C4C460;
+	}
+	#innerSun.Lux-200{
+		background-color:#D5D56B; 
+    	-webkit-box-shadow:0 0 20px 20px #D5D56B;
+		box-shadow:0 0 20px 20px #D5D56B;
+	}
+	#innerSun.Lux-250{
+			background-color:#E9E975; 
+    	-webkit-box-shadow:0 0 25px 25px #E9E975;
+		box-shadow:0 0 25px 25px #E9E975;
+	}
+	#innerSun.Lux-300{
+		background-color:#E7E766; 
+    	-webkit-box-shadow:0 0 30px 30px #E7E766;
+		box-shadow:0 0 30px 30px #E7E766;
+	}
+	#innerSun.Lux-350{
+		background-color:#F6F64F; 
+    	-webkit-box-shadow:0 0 35px 35px #F6F64F;
+		box-shadow:0 0 35px 35px #F6F64F;
+	}
+	#innerSun.Lux-400{
+		background-color:#EEEE3A; 
+    	-webkit-box-shadow:0 0 40px 50px #EEEE3A;
+		box-shadow:0 0 40px 40px #EEEE3A;
+	}
+	#innerSun.Lux-450{
+		background-color:#FBFB32; 
+    	-webkit-box-shadow:0 0 45px 45px #FBFB32;
+		box-shadow:0 0 45px 45px #FBFB32;
+	}
+	#innerSun.Lux-500{
+		background-color:#FAFA2A; 
+    	-webkit-box-shadow:0 0 50px 50px #FAFA2A;
+		box-shadow:0 0 50px 50px #FAFA2A;
+	}
+	#innerSun.Lux-550{
+		background-color:#FAFA20; 
+    	-webkit-box-shadow:0 0 55px 55px #FAFA20;
+		box-shadow:0 0 55px 55px #FAFA20;
+	}
+	#innerSun.Lux-600{
+		background-color:#FBFB16; 
+    	-webkit-box-shadow:0 0 60px 60px #FBFB16;
+		box-shadow:0 0 60px 60px #FBFB16;
+	}
+	#innerSun.Lux-650{
+			background-color:#FBFB16; 
+    -webkit-box-shadow:0 0 65px 65px #FBFB16;
+	box-shadow:0 0 65px 65px #FBFB16;
+	}
+	#innerSun.Lux-700{
+	
+		background-color:#FFFF00; 
+    -webkit-box-shadow:0 0 70px 70px #FFFF00;
+	box-shadow:0 0 70px 70px #FFFF00;
 	}
 
-/* LIGHT "BRIGHTNESS" STYLES */
-.level-100{
-	-webkit-box-shadow: 0 0 120px 100px white;
-	box-shadow: 0 0 120px 100px white;
-	}
-/*#level-99:hover ~ #light {
-	-webkit-box-shadow:0 0 119px 99px white;
-	box-shadow:0 0 119px 99px white;
-	}
-#level-98:hover ~ #light {
-	-webkit-box-shadow:0 0 118px 98px white;
-	box-shadow:0 0 118px 98px white;
-	}
-#level-97:hover ~ #light {
-	-webkit-box-shadow:0 0 117px 97px white;
-	box-shadow:0 0 117px 97px white;
-	}
-#level-96:hover ~ #light {
-	-webkit-box-shadow:0 0 116px 96px white;
-	box-shadow:0 0 116px 96px white;
-	}
-#level-95:hover ~ #light {
-	-webkit-box-shadow:0 0 115px 95px white;
-	box-shadow:0 0 115px 95px white;
-	}
-#level-94:hover ~ #light {
-	-webkit-box-shadow:0 0 114px 94px white;
-	box-shadow:0 0 114px 94px white;
-	}
-#level-93:hover ~ #light {
-	-webkit-box-shadow:0 0 113px 93px white;
-	box-shadow:0 0 113px 93px white;
-	}
-#level-92:hover ~ #light {
-	-webkit-box-shadow:0 0 112px 92px white;
-	box-shadow:0 0 112px 92px white;
-	}
-#level-91:hover ~ #light {
-	-webkit-box-shadow:0 0 111px 91px white;
-	box-shadow:0 0 111px 91px white;
-	}*/
-.level-90{
-	-webkit-box-shadow:0 0 110px 90px white;
-	box-shadow:0 0 110px 90px white;
-	}
-/*#level-89:hover ~ #light {
-	-webkit-box-shadow:0 0 109px 89px white;
-	box-shadow:0 0 109px 89px white;
-	}
-#level-88:hover ~ #light {
-	-webkit-box-shadow:0 0 108px 88px white;
-	box-shadow:0 0 108px 88px white;
-	}
-#level-87:hover ~ #light {
-	-webkit-box-shadow:0 0 107px 87px white;
-	box-shadow:0 0 107px 87px white;
-	}
-#level-86:hover ~ #light {
-	-webkit-box-shadow:0 0 106px 86px white;
-	box-shadow:0 0 106px 86px white;
-	}
-#level-85:hover ~ #light {
-	-webkit-box-shadow:0 0 105px 85px white;
-	box-shadow:0 0 105px 85px white;
-	}
-#level-84:hover ~ #light {
-	-webkit-box-shadow:0 0 104px 84px white;
-	box-shadow:0 0 104px 84px white;
-	}
-#level-83:hover ~ #light {
-	-webkit-box-shadow:0 0 103px 83px white;
-	box-shadow:0 0 103px 83px white;
-	}
-#level-82:hover ~ #light {
-	-webkit-box-shadow:0 0 102px 82px white;
-	box-shadow:0 0 102px 82px white;
-	}
-#level-81:hover ~ #light {
-	-webkit-box-shadow:0 0 101px 81px white;
-	box-shadow:0 0 101px 81px white;
-	}*/
-.level-80{
-	-webkit-box-shadow:0 0 100px 80px white;
-	box-shadow:0 0 100px 80px white;
-	}
-/*#level-79:hover ~ #light {
-	-webkit-box-shadow:0 0 99px 79px white;
-	box-shadow:0 0 99px 79px white;
-	}
-#level-78:hover ~ #light {
-	-webkit-box-shadow:0 0 98px 78px white;
-	box-shadow:0 0 98px 78px white;
-	}
-#level-77:hover ~ #light {
-	-webkit-box-shadow:0 0 97px 77px white;
-	box-shadow:0 0 97px 77px white;
-	}
-#level-76:hover ~ #light {
-	-webkit-box-shadow:0 0 96px 76px white;
-	box-shadow:0 0 96px 76px white;
-	}
-#level-75:hover ~ #light {
-	-webkit-box-shadow:0 0 95px 75px white;
-	box-shadow:0 0 95px 75px white;
-	}
-#level-74:hover ~ #light {
-	-webkit-box-shadow:0 0 94px 74px white;
-	box-shadow:0 0 94px 74px white;
-	}
-#level-73:hover ~ #light {
-	-webkit-box-shadow:0 0 93px 73px white;
-	box-shadow:0 0 93px 73px white;
-	}
-#level-72:hover ~ #light {
-	-webkit-box-shadow:0 0 92px 72px white;
-	box-shadow:0 0 92px 72px white;
-	}
-#level-71:hover ~ #light {
-	-webkit-box-shadow:0 0 91px 71px white;
-	box-shadow:0 0 91px 71px white;
-	}*/
-.level-70{
-	-webkit-box-shadow:0 0 90px 70px white;
-	box-shadow:0 0 90px 70px white;
-	}
-/*#level-69:hover ~ #light {
-	-webkit-box-shadow:0 0 89px 69px white;
-	box-shadow:0 0 89px 69px white;
-	}
-#level-68:hover ~ #light {
-	-webkit-box-shadow:0 0 88px 68px white;
-	box-shadow:0 0 88px 68px white;
-	}
-#level-67:hover ~ #light {
-	-webkit-box-shadow:0 0 87px 67px white;
-	box-shadow:0 0 87px 67px white;
-	}
-#level-66:hover ~ #light {
-	-webkit-box-shadow:0 0 86px 66px white;
-	box-shadow:0 0 86px 66px white;
-	}
-#level-65:hover ~ #light {
-	-webkit-box-shadow:0 0 85px 65px white;
-	box-shadow:0 0 85px 65px white;
-	}
-#level-64:hover ~ #light {
-	-webkit-box-shadow:0 0 84px 64px white;
-	box-shadow:0 0 84px 64px white;
-	}
-#level-63:hover ~ #light {
-	-webkit-box-shadow:0 0 83px 63px white;
-	box-shadow:0 0 83px 63px white;
-	}
-#level-62:hover ~ #light {
-	-webkit-box-shadow:0 0 82px 62px white;
-	box-shadow:0 0 82px 62px white;
-	}
-#level-61:hover ~ #light {
-	-webkit-box-shadow:0 0 81px 61px white;
-	box-shadow:0 0 81px 61px white;
-	}*/
-.level-60 {
-	-webkit-box-shadow:0 0 80px 60px white;
-	box-shadow:0 0 80px 60px white;
-	}
-/*#level-59:hover ~ #light {
-	-webkit-box-shadow:0 0 79px 59px white;
-	box-shadow:0 0 79px 59px white;
-	}
-#level-58:hover ~ #light {
-	-webkit-box-shadow:0 0 78px 58px white;
-	box-shadow:0 0 78px 58px white;
-	}
-#level-57:hover ~ #light {
-	-webkit-box-shadow:0 0 77px 57px white;
-	box-shadow:0 0 77px 57px white;
-	}
-#level-56:hover ~ #light {
-	-webkit-box-shadow:0 0 76px 56px white;
-	box-shadow:0 0 76px 56px white;
-	}
-#level-55:hover ~ #light {
-	-webkit-box-shadow:0 0 75px 55px white;
-	box-shadow:0 0 75px 55px white;
-	}
-#level-54:hover ~ #light {
-	-webkit-box-shadow:0 0 74px 54px white;
-	box-shadow:0 0 74px 54px white;
-	}
-#level-53:hover ~ #light {
-	-webkit-box-shadow:0 0 73px 53px white;
-	box-shadow:0 0 73px 53px white;
-	}
-#level-52:hover ~ #light {
-	-webkit-box-shadow:0 0 72px 52px white;
-	box-shadow:0 0 72px 52px white;
-	}
-#level-51:hover ~ #light {
-	-webkit-box-shadow:0 0 71px 51px white;
-	box-shadow:0 0 71px 51px white;
-	}*/
-
-.level-50 {
-	-webkit-box-shadow:0 0 70px 50px white;
-	box-shadow:0 0 70px 50px white;
-	}
-/*#level-49:hover ~ #light {
-	-webkit-box-shadow:0 0 69px 49px white;
-	box-shadow:0 0 69px 49px white;
-	}
-#level-48:hover ~ #light {
-	-webkit-box-shadow:0 0 68px 48px white;
-	box-shadow:0 0 68px 48px white;
-	}
-#level-47:hover ~ #light {
-	-webkit-box-shadow:0 0 67px 47px white;
-	box-shadow:0 0 67px 47px white;
-	}
-#level-46:hover ~ #light {
-	-webkit-box-shadow:0 0 66px 46px white;
-	box-shadow:0 0 66px 46px white;
-	}
-#level-45:hover ~ #light {
-	-webkit-box-shadow:0 0 65px 45px white;
-	box-shadow:0 0 65px 45px white;
-	}
-#level-44:hover ~ #light {
-	-webkit-box-shadow:0 0 64px 44px white;
-	box-shadow:0 0 64px 44px white;
-	}
-#level-43:hover ~ #light {
-	-webkit-box-shadow:0 0 63px 43px white;
-	box-shadow:0 0 63px 43px white;
-	}
-#level-42:hover ~ #light {
-	-webkit-box-shadow:0 0 62px 42px white;
-	box-shadow:0 0 62px 42px white;
-	}
-#level-41:hover ~ #light {
-	-webkit-box-shadow:0 0 61px 41px white;
-	box-shadow:0 0 61px 41px white;
-	}*/
-.level-40{
-	-webkit-box-shadow:0 0 60px 40px white;
-	box-shadow:0 0 60px 40px white;
-	}
-/*#level-39:hover ~ #light {
-	-webkit-box-shadow:0 0 59px 39px white;
-	box-shadow:0 0 59px 39px white;
-	}
-#level-38:hover ~ #light {
-	-webkit-box-shadow:0 0 58px 38px white;
-	box-shadow:0 0 58px 38px white;
-	}
-#level-37:hover ~ #light {
-	-webkit-box-shadow:0 0 57px 37px white;
-	box-shadow:0 0 57px 37px white;
-	}
-#level-36:hover ~ #light {
-	-webkit-box-shadow:0 0 56px 36px white;
-	box-shadow:0 0 56px 36px white;
-	}
-#level-35:hover ~ #light {
-	-webkit-box-shadow:0 0 55px 35px white;
-	box-shadow:0 0 55px 35px white;
-	}
-#level-34:hover ~ #light {
-	-webkit-box-shadow:0 0 54px 34px white;
-	box-shadow:0 0 54px 34px white;
-	}
-#level-33:hover ~ #light {
-	-webkit-box-shadow:0 0 53px 33px white;
-	box-shadow:0 0 53px 33px white;
-	}
-#level-32:hover ~ #light {
-	-webkit-box-shadow:0 0 52px 32px white;
-	box-shadow:0 0 52px 32px white;
-	}
-#level-31:hover ~ #light {
-	-webkit-box-shadow:0 0 51px 31px white;
-	box-shadow:0 0 51px 31px white;
-	}*/
-.level-30{
-	-webkit-box-shadow:0 0 50px 30px white;
-	box-shadow:0 0 50px 30px white;
-	}
-/*#level-29:hover ~ #light {
-	-webkit-box-shadow:0 0 49px 29px white;
-	box-shadow:0 0 49px 29px white;
-	}
-#level-28:hover ~ #light {
-	-webkit-box-shadow:0 0 48px 28px white;
-	box-shadow:0 0 48px 28px white;
-	}
-#level-27:hover ~ #light {
-	-webkit-box-shadow:0 0 47px 27px white;
-	box-shadow:0 0 47px 27px white;
-	}
-#level-26:hover ~ #light {
-	-webkit-box-shadow:0 0 46px 26px white;
-	box-shadow:0 0 46px 26px white;
-	}
-#level-25:hover ~ #light {
-	-webkit-box-shadow:0 0 45px 25px white;
-	box-shadow:0 0 45px 25px white;
-	}
-#level-24:hover ~ #light {
-	-webkit-box-shadow:0 0 44px 24px white;
-	box-shadow:0 0 44px 24px white;
-	}
-#level-23:hover ~ #light {
-	-webkit-box-shadow:0 0 43px 23px white;
-	box-shadow:0 0 43px 23px white;
-	}
-#level-22:hover ~ #light {
-	-webkit-box-shadow:0 0 42px 22px white;
-	box-shadow:0 0 42px 22px white;
-	}
-#level-21:hover ~ #light {
-	-webkit-box-shadow:0 0 41px 21px white;
-	box-shadow:0 0 41px 21px white;
-	}*/
-.level-20{
-	-webkit-box-shadow:0 0 40px 20px white;
-	box-shadow:0 0 40px 20px white;
-	}
-/*#level-19:hover ~ #light {
-	-webkit-box-shadow:0 0 39px 19px white;
-	box-shadow:0 0 39px 19px white;
-	}
-#level-18:hover ~ #light {
-	-webkit-box-shadow:0 0 38px 18px white;
-	box-shadow:0 0 38px 18px white;
-	}
-#level-17:hover ~ #light {
-	-webkit-box-shadow:0 0 37px 17px white;
-	box-shadow:0 0 37px 17px white;
-	}
-#level-16:hover ~ #light {
-	-webkit-box-shadow:0 0 36px 16px white;
-	box-shadow:0 0 36px 16px white;
-	}
-#level-15:hover ~ #light {
-	-webkit-box-shadow:0 0 35px 15px white;
-	box-shadow:0 0 35px 15px white;
-	}
-#level-14:hover ~ #light {
-	-webkit-box-shadow:0 0 34px 14px white;
-	box-shadow:0 0 34px 14px white;
-	}
-#level-13:hover ~ #light {
-	-webkit-box-shadow:0 0 33px 13px white;
-	box-shadow:0 0 33px 13px white;
-	}
-#level-12:hover ~ #light {
-	-webkit-box-shadow:0 0 32px 12px white;
-	box-shadow:0 0 32px 12px white;
-	}
-#level-11:hover ~ #light {
-	-webkit-box-shadow:0 0 31px 11px white;
-	box-shadow:0 0 31px 11px white;
-	}*/
-.level-10{
-	-webkit-box-shadow:0 0 30px 10px white;
-	box-shadow:0 0 30px 10px white;
-	}
-/*
-#level-09:hover ~ #light {
-	-webkit-box-shadow:0 0 29px 09px white;
-	box-shadow:0 0 29px 09px white;
-	}
-#level-08{
-	-webkit-box-shadow:0 0 28px 08px white;
-	box-shadow:0 0 28px 08px white;
-	}
-#level-07{
-	-webkit-box-shadow:0 0 27px 07px white;
-	box-shadow:0 0 27px 07px white;
-	}
-#level-06{
-	-webkit-box-shadow:0 0 26px 06px white;
-	box-shadow:0 0 26px 06px white;
-	}
-#level-05{
-	-webkit-box-shadow:0 0 25px 05px white;
-	box-shadow:0 0 25px 05px white;
-	}
-#level-04
-	-webkit-box-shadow:0 0 24px 04px white;
-	box-shadow:0 0 24px 04px white;
-	}
-#level-03{
-	-webkit-box-shadow:0 0 23px 03px white;
-	box-shadow:0 0 23px 03px white;
-	}
-#level-02{
-	-webkit-box-shadow:0 0 22px 02px white;
-	box-shadow:0 0 22px 02px white;
-	}
-#level-01{
-	-webkit-box-shadow:0 0 21px 01px white;
-	box-shadow:0 0 21px 01px white;
-	}
-*/
-.level-00 {
-	-webkit-box-shadow:0 0 20px 00px white;
-	box-shadow:0 0 20px 00px white;
-	}
-    margin: auto;
-}
-
-#controlCenter{
-	display: inline;
-}
-
-#roomLightTemp{
-	display: inline;
-}
-#light_indicator_container{
-
-}
-
-.graph_container{
-	padding:0;
-	width: 100%;
-	height:70%;
-}
-#graph_container div{
-	padding: 10px;
-
-}
-
-
-#light-bulb	{
- 	width:150px; 
- 	height:150px; 
- 	top:20%; 
- 	left:70%; 
- 	background:url(imgs/lightbulb.png) no-repeat -150px 0; 
- 	z-index:1; 
- }

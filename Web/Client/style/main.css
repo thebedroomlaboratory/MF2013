@@ -1,6 +1,36 @@
+@font-face {
+
+    font-family: 'Sketch Nice';
+
+    src: local(SketchNice), url('../fonts/SketchNice.ttf') format('opentype');
+
+}
+
+html{
+	margin:0;
+	width:100%;
+	height:100%;
+	padding: 0;
+	font-family: Serif,'Lucida Console','Roboto Condensed';
+}
+body{
+	margin:0;
+	width:100%;
+	height:100%;
+	padding: 0;
+	font:14px/1 Arial; 
+  text-align:center;
+  color:#333; 
+  /*background-color:#EEE; */
+  height:100%; 
+ 
+}
 #house_div{
-	width: 100%;
-	padding: .3%;
+  margin:0;
+	width:100%;
+	height:100%;
+	padding: 0;
+	
 
 }
 
@@ -11,18 +41,28 @@
     
     float:left;
     /* Width and height for each item */
-    width:49%;
-    height:49%;
+    width:50%;
+    height:50%;
+    padding: 0;
     /* Text align and background color */
     text-align:center;
     /*	 For Dev only	*/
-    background-color:#cdc;
-    border: 1px solid black;
+    /*background-color:#cdc;*/
+    border:none;
+    outline: 1px solid black;
+    /*background:radial-gradient(#fff6e4, #8b9da9); */
+  	/*background:-webkit-radial-gradient(#fff6e4, #8b9da9);*/
+ 	background: url("../img/bg.jpg") repeat fixed 0 0 transparent;
     /*    End of For Dev only */
 
-    margin: auto;
 }
 
+h2{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-family: 'Sketch Nice',Serif,'Lucida Console','Roboto Condensed';
+	 font-stretch:extra-expanded;
+}
 #controlCenter{
 	display: inline;
 }
@@ -55,11 +95,18 @@
  }
 
 .ccInfo{
-	width: 98%;
-	height: 30%;
-	background-color: white;
+	font-family: 'Finger Paint';
+	width: 95%;
+	height: 25%;
+	color: white;
     border: 1px solid black;
     margin: 1%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius:10px;
+    background: url("../img/header2.png") repeat fixed 0 0 transparent;
+    ;
+
 
 }
 .ccInfo p{
@@ -67,18 +114,119 @@
 	text-align: left;
 	padding-left: 10px;
 
+	
+
+
 }
 
 .day{
-	background-color: white;
-	color: black;
+	background: url("../img/header.png") repeat fixed 0 0 transparent;
+    ;
+	color: white;
 }
 
 .night{
 	background-color: black;
-	color: white;
+	color: black;
+}
+
+.control{
+	width:200px;
+	padding-top: 10px;
+}
+.control label{
+	/*position: relative;
+	top:-1%;
+	*/
 }
 #controlCenter{
 
 }
+
+canvas{
+	margin: 0 25px;
+}
+
+/*iOS style Toggle*/
+.toggleLabel{
+	position: relative;
+	display:inline;
+	top:-10;
+
+}
+
+.togglebox input{ 
+	display:none;
+ }
+.togglebox{ 
+	display:inline-block;
+	border:1px solid #BBB;
+	width:90px;
+	height:30px;
+	position:relative;
+	border-radius:20px;
+	color:#FFF;
+	font-weight:bold;
+	overflow:hidden;
+	box-shadow:0 1px 0 #CCC;
+ }
+.togglebox label{ width:200%;
+	height:100%;
+	line-height:30px;
+	border-radius:0.4em;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:1;
+	font-size:1.1em;
+	cursor:pointer;
+	-webkit-transition:0.12s;
+	-moz-transition:0.12s;
+	transition:0.12s;
+ }
+.togglebox span{ 
+	position:absolute;
+	right:-100px;
+ }
+
+.togglebox label::before{ 
+	content:'ON';
+	width:62px;
+	float:left;
+	margin-right:-16px;
+	padding-right:13px;
+	text-align:center;
+	background:#007FEA;
+	text-shadow:0 -1px 0px #093B5C;
+	box-shadow:0 4px 5px -2px rgba(0,0,0,0.3) inset;
+ }
+.togglebox label b{ 
+	display:block;
+	height:100%;
+	width:30px;
+	float:left;
+	position:relative;
+	z-index:1;
+	border:1px solid #AAA;
+	background:#F6F6F6;
+	box-shadow:0 4px 0 -2px #F1F1F1 inset, 0 2em 2em -2em #AAA inset, 0 0 2px rgba(0,0,0,.5);
+ 	border-radius:20px;
+ }
+.togglebox label:hover b{ 
+	background:#E5E5E5;
+ }
+.togglebox label::after{ 
+	content:'OFF';
+	width:62px;
+	float:left;
+	margin-left:-15px;
+	padding-left:13px;
+	text-align:center;
+	color:#999;
+	background:#FFF;
+	box-shadow:0 4px 5px -2px rgba(0,0,0,0.3) inset;
+ }
+.togglebox input:checked ~ label{ 
+	left:-60px;
+ }
 

@@ -4,6 +4,11 @@
       <script type="text/javascript" src="scripts/controlCenter.js" ></script>
       <script type="text/javascript" src="scripts/maker.js" ></script>
       <script type="text/javascript" src="scripts/Chart.js"></script>
+      <script type="text/JavaScript">
+	function refresh(delay) {
+	setTimeout("location.reload(true);",delay);
+	}
+      </script>
       <!-- CSS -->
       <!-- toggle Button CSS styles the Toggle switches for control Center -->
       <link rel="stylesheet" type="text/css" href="style/toggleButton.css"/>
@@ -11,7 +16,7 @@
        <link rel="stylesheet" type="text/css" href="style/light.css"/>
       <!-- End of CSS -->
    </head>
-   <body>
+   <body onload="refresh(2000);">
       <div id="house_div">
           <!-- Thermostat -->
          <div class="house_room" id="roomLightTemp">
