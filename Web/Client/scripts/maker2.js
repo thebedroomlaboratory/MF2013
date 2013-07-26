@@ -50,16 +50,11 @@ function updateSliders(){
           var ctx = getContextOfCanvasElement('thermostat_Line_chart');
           new Chart(ctx).Line(data);
         }
-
-        /**
-         * Create graph data
-         */
         function createGraphData(x,y){
           var data = {
             labels : x,
             datasets : [{
-              fillColor : "rgba(151,187,205,0.5)",
-              strokeColor : "rgba(151,187,205,1)",
+             fillColor : "rgba(151,187,205,0.5)",              strokeColor : "rgba(151,187,205,1)",
               pointColor : "rgba(151,187,205,1)",
               pointStrokeColor : "#fff",
               data : y
