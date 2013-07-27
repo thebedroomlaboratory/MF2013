@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
+		<script type="text/javascript">
+
+		function getOvenValues() {
+            $.getJSON('getOvenData.php?id=1', function(data) {
+            	console.log(data);
+            	// x axis data
+                var x = new Array();
+                // y axis data
+                var tempRange = new Array();
+                var json = data;
+                for(var i=0; i<json.length; i++){
+                	var elm = json[i];
+                  	x[i] = i;
+                  	tempRange[i] = parseInt(elm.temp);
+                  	console.log("dateRange["+i+"] "+x[i]+" | "+tempRange[i]);
+                }
+            });
+             // console.log(value);
+        }
+
+ 		function getPeopleValues() {
+            $.getJSON('getPeopleData.php?id=1', function(data) {
+            	console.log(data);
+            	// x axis data
+                var x = new Array();
+                // y axis data
+                var peopleRange = new Array();
+                var json = data;
+                for(var i=0; i<json.length; i++){
+                	var elm = json[i];
+                  	x[i] = i;
+                  	peopleRange[i] = parseInt(elm.counter);
+                  	console.log("dateRange["+i+"] "+x[i]+" | "+peopleRange[i]);
+                }
+            });
+             // console.log(value);
+        }
+
+  		function getThermostatValues() {
+            $.getJSON('getThermostatData.php?id=1', function(data) {
+            	console.log(data);
+            	// x axis data
+                var x = new Array();
+                // y axis data
+                var tempRange = new Array();
+                var json = data;
+                for(var i=0; i<json.length; i++){
+                	var elm = json[i];
+                  	x[i] = i;
+                  	tempRange[i] = parseInt(elm.temp);
+                  	console.log("dateRange["+i+"] "+x[i]+" | "+tempRange[i]);
+                }
+            });
+             // console.log(value);
+        }        
+		</script>
+	</head>
+	<body>
+		<button onclick="getOvenValues();">Oven</button>
+		<button onclick="getPeopleValues();">People</button>
+		<button onclick="getThermostatValues();">Thermostat</button>
+	</body>
+</html>
