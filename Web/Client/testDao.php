@@ -42,6 +42,8 @@ $y1[$i]=$db_field_ppl['counter'];
 $y2[$i]=$db_field_ppl['switch'];
 $i++;
 }
+array_reverse($y1);
+array_reverse($y2);
 ?>
 
 <script>
@@ -87,6 +89,8 @@ $y1[$i]=$db_field_oven['temp'];
 $y2[$i]=$db_field_oven['status'];
 $i++;
 }
+array_reverse($y1);
+array_reverse($y2);
 ?>
 
 <script>
@@ -136,6 +140,10 @@ $y3[$i]=$db_field_temp['temp'];
 $y4[$i]=$db_field_temp['status'];
 $i++;
 }
+array_reverse($y1);
+array_reverse($y2);
+array_reverse($y3);
+array_reverse($y4);
 ?>
 
 <script>
