@@ -4,15 +4,17 @@ import time
 
 dao.connect()
 
-data=[random.randint(1, 10), random.randint(1, 10)]
-dao.insertRow('people', data)
+while(True):
 
-data=[random.randint(1, 10), random.randint(1, 10)]
-dao.insertRow('oven', data)
+	data=[random.randint(0, 10), random.randint(0, 1)]
+	dao.insertRow('people', data)
 
-data=[random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)]
-dao.insertRow('temp', data)
+	data=[random.randint(2500, 20000), random.randint(0, 1)]
+	dao.insertRow('oven', data)
 
-time.sleep(2);
+	data=[random.randint(0, 1), random.randint(0, 700), random.randint(0, 3000), random.randint(0, 1)]
+	dao.insertRow('temp', data)
+
+	time.sleep(2);
 
 dao.disConnect()

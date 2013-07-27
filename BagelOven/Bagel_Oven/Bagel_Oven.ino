@@ -77,7 +77,7 @@
 *   >> https://github.com/rocketscream/MAX31855
 * - MAX6675 Library (for board v1.50 & below):
 *   >> https://github.com/adafruit/MAX6675-library
-*    
+*
 * Revision  Description
 * ========  ===========
 * 1.20			Adds supports for v1.60 (and above) of Reflow Oven Controller 
@@ -100,9 +100,9 @@
 // ***** INCLUDES *****
 #include <LiquidCrystal.h>
 #ifdef	USE_MAX31855
-#include "MAX31855.h"
+	#include "MAX31855.h"
 #else
-#include <max6675.h>
+	#include <max6675.h>
 #endif
 #include "PID_v1.h"
 
@@ -141,9 +141,9 @@ typedef enum DEBOUNCE_STATE
 
 // ***** CONSTANTS *****
 #define TEMPERATURE_ROOM 50
-#define TEMPERATURE_SOAK_MIN 150
-#define TEMPERATURE_SOAK_MAX 200
-#define TEMPERATURE_REFLOW_MAX 250
+#define TEMPERATURE_SOAK_MIN 90
+#define TEMPERATURE_SOAK_MAX 110
+#define TEMPERATURE_REFLOW_MAX 185
 #define TEMPERATURE_COOL_MIN 100
 #define SENSOR_SAMPLING_TIME 1000
 #define SOAK_TEMPERATURE_STEP 5
@@ -169,8 +169,8 @@ typedef enum DEBOUNCE_STATE
 const char* lcdMessagesReflowStatus[] = {
   "Ready",
   "Pre-heat",
-  "Soak",
-  "Reflow",
+  "Melt butter",
+  "Toast",
   "Cool",
   "Complete",
 	"Wait,hot",
@@ -239,7 +239,14 @@ long lastDebounceTime;
 switch_t switchStatus;
 // Seconds timer
 int timerSeconds;
-int serialInputVariable;
+
+
+// Bagel oven Stuff
+boolean serialInput = false;         // a string to hold incoming data
+boolean transmissionComplete = false;  // whether the string is complete
+int currentTemp = 0;
+int errorCount = 0;
+
 
 // Specify PID control interface
 PID reflowOvenPID(&input, &output, &setpoint, kp, ki, kd, DIRECT);
@@ -247,14 +254,15 @@ PID reflowOvenPID(&input, &output, &setpoint, kp, ki, kd, DIRECT);
 LiquidCrystal lcd(lcdRsPin, lcdEPin, lcdD4Pin, lcdD5Pin, lcdD6Pin, lcdD7Pin);
 // Specify MAX6675 thermocouple interface
 #ifdef	USE_MAX31855
-	MAX31855 thermocouple(thermocoupleSOPin, thermocoupleCSPin, thermocoupleCLKPin);
+	MAX31855 thermocouple(thermocoupleSOPin, thermocoupleCSPin, 
+												thermocoupleCLKPin);
 #else
-	MAX6675 thermocouple(thermocoupleCLKPin, thermocoupleCSPin, thermocoupleSOPin);
+	MAX6675 thermocouple(thermocoupleCLKPin, thermocoupleCSPin, 
+											 thermocoupleSOPin);
 #endif
 
 void setup()
 {
-  
   // SSR pin initialization to ensure reflow oven is off
   digitalWrite(ssrPin, LOW);
   pinMode(ssrPin, OUTPUT);
@@ -280,14 +288,14 @@ void setup()
   lcd.begin(8, 2);
   lcd.createChar(0, degree);
   lcd.clear();
-  lcd.print("Reflow");
+  lcd.print("Bagel");
   lcd.setCursor(0, 1);
-  lcd.print("Oven 1.2");
+  lcd.print("Oven 1.0");
   digitalWrite(buzzerPin, LOW);
   delay(2500);
   lcd.clear();
 
-  // Serial communication at 57600 bps
+  // Serial communication at 9600 bps
   Serial.begin(9600);
 
   // Turn off LED (active low)
@@ -303,12 +311,12 @@ void setup()
   nextRead = millis();
 }
 
+
+
+
 void loop()
 {
-  serialInputVariable = Serial.read();
-  if(serialInputVariable = 1)
-  {
-    // Current time
+  // Current time
   unsigned long now;
 
   // Time to read thermocouple?
@@ -322,7 +330,7 @@ void loop()
 		#else
 			input = thermocouple.readCelsius();
 		#endif
-
+		
     // If thermocouple problem detected
 		#ifdef	USE_MAX6675
 			if (isnan(input))
@@ -331,9 +339,20 @@ void loop()
 				 (input == FAULT_SHORT_VCC))
     #endif
 		{
+      if (errorCount>2){
       // Illegal operation
+      Serial.print("***");
+      Serial.print(input);
+      Serial.println("***");
       reflowState = REFLOW_STATE_ERROR;
       reflowStatus = REFLOW_STATUS_OFF;
+      }
+      else {
+        errorCount++;
+      }
+    }
+    else {
+      errorCount=0;
     }
   }
 
@@ -349,19 +368,16 @@ void loop()
       // Increase seconds timer for reflow curve analysis
       timerSeconds++;
       // Send temperature and time stamp to serial 
-      Serial.print(timerSeconds);
-      Serial.print(" ");
-      Serial.print(setpoint);
-      Serial.print(" ");
-      Serial.print(input);
-      Serial.print(" ");
-      Serial.println(output);
     }
     else
     {
       // Turn off red LED
       digitalWrite(ledRedPin, HIGH);
     }
+    currentTemp=input*100;
+    Serial.print(currentTemp);
+    Serial.print("?");
+    Serial.println(reflowStatus);
 
     // Clear LCD
     lcd.clear();
@@ -404,10 +420,13 @@ void loop()
 		else
 		{
 			// If switch is pressed to start reflow process
-			if (switchStatus == SWITCH_1)
+			if (switchStatus == SWITCH_1 || (transmissionComplete && serialInput))
 			{
+        if (transmissionComplete) {
+          transmissionComplete = false;
+        }
         // Send header for CSV file
-        Serial.println("Time Setpoint Input Output");
+        //Serial.println("Time Setpoint Input Output");
         // Intialize seconds timer for serial debug information
         timerSeconds = 0;
         // Initialize PID control window starting time
@@ -504,7 +523,7 @@ void loop()
       reflowState = REFLOW_STATE_IDLE; 
     }
     break;
-
+	
 	case REFLOW_STATE_TOO_HOT:
 		// If oven temperature drops below room temperature
 		if (input < TEMPERATURE_ROOM)
@@ -513,7 +532,7 @@ void loop()
 			reflowState = REFLOW_STATE_IDLE;
 		}
 		break;
-
+		
   case REFLOW_STATE_ERROR:
     // If thermocouple problem is still present
 		#ifdef	USE_MAX6675
@@ -627,10 +646,25 @@ void loop()
   {
     digitalWrite(ssrPin, LOW);
   }
-  }
-  else
-  {
-    delay(1000);
+}
+
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read(); 
+    // add it to the inputString:
+    
+    // if the incoming character is a newline, set a flag
+    // so the main loop can do something about it:
+    if (inChar != '\n') {
+      if (inChar == '0')
+        serialInput=false;
+      else if (inChar == '1')
+        serialInput=true;
+    }
+    else {
+      transmissionComplete = true;
+    }
   }
 }
 

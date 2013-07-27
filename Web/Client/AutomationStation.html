@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
+        <script type="text/javascript" src="scripts/thermostatGraph.js"></script>
+        <script type="text/javascript" src="scripts/peopleGraph.js"></script>
+        <script type="text/javascript" src="scripts/ovenGraph.js"></script>
+        <script type="text/javascript" src="scripts/status.js"></script>
+		<script type="text/javascript" src="scripts/light.js"></script>
+		<script type="text/javascript" src="scripts/controlCenter.js"></script>
+		        
+        <link rel="stylesheet" type="text/css" href="style/main2.css"/>
+        <link rel="stylesheet" type="text/css" href="style/toggleButton.css"/>
+	</head>
+	<body>
+		<script src="hc/js/highcharts.js"></script>
+		<script src="hc/js/highcharts-more.js"></script>
+		<script src="hc/js/modules/exporting.js"></script>
+		
+		<div id="banner">
+			<img id="logo" src="img/logo.jpg" />
+			<h1>Automation Station</h1>
+		</div>
+		
+		<div id="house_div">
+			<div class="house_room" id="top_left">
+				<div class="graph" id="people_container"></div>
+			</div>
+			<div class="house_room" id="top_right">
+				<div class="graph" id="oven_container"></div>
+			</div>
+			<div class="house_room" id="bottom_left">
+				<div class="graph" id="thermostat_container"></div>
+			</div>
+			<div class="house_room" id="bottom_middle">
+				<div class="graph" id="light_container"></div>
+			</div>
+			<div class="house_room" id="bottom_right">
+				<h2>Heating</h2>
+				<div>		
+					<div id="heating_Controls" class="control">
+						<div class="sliderWrapper">
+                  			<div class="onoffswitch">
+                     			<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox socketSwitch" id="heat_onoffswitch" checked>
+                     			<label class="onoffswitch-label" for="heat_onoffswitch">
+                        			<div class="onoffswitch-inner">
+                           				<div class="onoffswitch-active">
+                              				<div class="onoffswitch-switch">ON</div>
+                           				</div>
+                           				<div class="onoffswitch-inactive">
+                              				<div class="onoffswitch-switch">OFF</div>
+                           				</div>
+ 									</div>
+								</label>
+							</div>
+               			</div>
+               		</div>
+               		<p id="heating_status"></p>	
+            	</div>   
+				<h2>Lighting</h2>
+				<div>
+					<!-- light_Controls -->
+            		<div id="light_Controls" class="control">
+               			<div class="sliderWrapper">
+                  			<div class="onoffswitch">
+                     			<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox socketSwitch" id="light_onoffswitch" checked>
+                     			<label class="onoffswitch-label" for="light_onoffswitch">
+                        			<div class="onoffswitch-inner">
+                           				<div class="onoffswitch-active">
+                              				<div class="onoffswitch-switch">ON</div>
+                           				</div>
+                           				<div class="onoffswitch-inactive">
+                              				<div class="onoffswitch-switch">OFF</div>
+                           				</div>
+                        			</div>
+                     			</label>
+                  			</div>
+               			</div>
+            		</div>
+				
+					<p id="light_status"></p>
+				</div>
+				<h2>Oven</h2>
+				<div>
+					<div id="oven_Controls" class="control">
+                    	<div class="sliderWrapper">
+                        	<div class="onoffswitch">
+                           		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox socketSwitch" id="oven_onoffswitch" checked>
+                           		<label class="onoffswitch-label" for="oven_onoffswitch">
+                              		<div class="onoffswitch-inner">
+                                 		<div class="onoffswitch-active">
+                                    		<div class="onoffswitch-switch">ON</div>
+                                 		</div>
+                                 		<div class="onoffswitch-inactive">
+                                    		<div class="onoffswitch-switch">OFF</div>
+                                 		</div>
+                              		</div>
+                           		</label>
+                        	</div>
+                     	</div>
+            		</div>
+					<p id="oven_status"></p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+

@@ -1,6 +1,30 @@
+function getLuxValue() {
+	var result = null;
+    $.ajax({
+    	async: false,
+    	url: "getThermostatData.php",
+        data: "id=1",
+        dataType: "json",
+        success: function(data){
+            console.log(data);
+            // x axis data
+            var x = new Array();
+            // y axis data
+            var lux = new Array();
+            var json = data;
+            var elm = json[0];
+            x[0] = 0;
+            lux[0] = parseInt(elm.lux);
+            console.log("dateRange["+0+"] "+x[0]+" | "+lux[0]);
+            result=lux[0];    
+        }});     
+	console.log("Test - "+result);
+	return result;
+} 
+
 $(function () {
 			
-		    $('#container').highcharts({
+		    $('#light_container').highcharts({
 			
 			    chart: {
 			        type: 'gauge',
@@ -11,7 +35,7 @@ $(function () {
 			    },
 			    
 			    title: {
-			        text: 'Speedometer'
+			        text: 'Lux Meter'
 			    },
 			    
 			    pane: {
@@ -50,7 +74,7 @@ $(function () {
 			    // the value axis
 			    yAxis: {
 			        min: 0,
-			        max: 200,
+			        max: 700,
 			        
 			        minorTickInterval: 'auto',
 			        minorTickWidth: 1,
@@ -68,28 +92,28 @@ $(function () {
 			            rotation: 'auto'
 			        },
 			        title: {
-			            text: 'km/h'
+			            text: 'Lux'
 			        },
 			        plotBands: [{
 			            from: 0,
-			            to: 120,
+			            to: 150,
 			            color: '#55BF3B' // green
 			        }, {
-			            from: 120,
-			            to: 160,
+			            from: 150,
+			            to: 350,
 			            color: '#DDDF0D' // yellow
 			        }, {
-			            from: 160,
-			            to: 200,
+			            from: 350,
+			            to: 700,
 			            color: '#DF5353' // red
 			        }]        
 			    },
 			
 			    series: [{
-			        name: 'Speed',
+			        name: 'Light Reading',
 			        data: [80],
 			        tooltip: {
-			            valueSuffix: ' km/h'
+			            valueSuffix: ' Lux'
 			        }
 			    }]
 			
@@ -99,13 +123,9 @@ $(function () {
 				if (!chart.renderer.forExport) {
 				    setInterval(function () {
 				        var point = chart.series[0].points[0],
-				            newVal,
-				            inc = Math.round((Math.random() - 0.5) * 20);
+				        	newVal;
 				        
-				        newVal = point.y + inc;
-				        if (newVal < 0 || newVal > 200) {
-				            newVal = point.y - inc;
-				        }
+				        newVal = getLuxValue();
 				        
 				        point.update(newVal);
 				        

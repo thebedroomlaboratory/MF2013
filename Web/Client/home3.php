@@ -6,7 +6,7 @@
         <script type="text/javascript" src="scripts/jquery-2.0.3.js"></script>
         <script type="text/javascript" src="scripts/controlCenter.js" ></script>
         <script type="text/javascript" src="scripts/maker2.js" ></script>
-        <script type="text/javascript" src="scripts/Chart.js"></script>
+        <script type="text/javascript" src="scripts/thermostatGraph.js" ></script>
         <script type="text/javascript">
          $(function(){
         // check the sliders
@@ -40,6 +40,8 @@
         <!-- End of CSS -->
     </head>
       <body>
+      <script src="hc/js/highcharts.js"></script>
+	<script src="hc/js/modules/exporting.js"></script>
 
       <div id="house_div">
 
@@ -49,7 +51,7 @@
 
             <div class="graph_container">
               <div id="thermostat_Canvas_container" style="float:left;width: 50%; height: 75%;">
-                <canvas id="thermostat_Line_chart" width="300" height="225"></canvas>
+                <div id="thermostat_container" style="min-width: 100px; height: 100px; margin: 0 auto"></div>
               </div>
                 <div id="light_indicator_container" >
                     <div id="sun" style="">
